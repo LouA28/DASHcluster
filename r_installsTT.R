@@ -1,13 +1,18 @@
 # Use available cores minus 2
 options(Ncpus = parallel::detectCores() - 2)
 
-# Define list of packages you want to install
+# Step 1: Ensure Rcpp is installed first
+if (!"Rcpp" %in% rownames(installed.packages())) {
+  install.packages("Rcpp", repos = "https://cloud.r-project.org")
+}
+
+# Step 2: Define list of packages to install (excluding Rcpp)
 packages <- c(
   "arrow", "BH", "BiocManager", "brms", "cli", "cowplot", "crosstalk", "data.table", "devtools",
   "dplyr", "DT", "formattable", "gamm4", "gdalBindings", "ggnewscale", "ggplot2", "ggrepel",
   "glmmTMB", "gratia", "GT", "here", "htmltools", "htmlwidgets", "janitor", "kableExtra",
   "lattice", "lazyeval", "leaflet", "lubridate", "mgcv", "nanoparquet", "nimble", "odbc",
-  "openxlsx", "packrat", "plotly", "png", "profvis", "purrr", "qgam", "raster", "Rcpp", "renv",
+  "openxlsx", "packrat", "plotly", "png", "profvis", "purrr", "qgam", "raster", "renv",
   "readr", "readxl", "reticulate", "rlang", "RPostgres", "rsconnect", "rstudioapi", "scales", "sf",
   "shiny", "shinyBS", "shinycssloaders", "shinydashboard", "shinyjs", "slickR", "snakecase",
   "srvyr", "stringr", "svglite", "tidyr", "tidyverse", "tictoc", "tmap", "treemap", "treemapify",
@@ -16,11 +21,10 @@ packages <- c(
   "rnaturalearth", "vegan", "visdat", "connectapi", "gllvm", "brickster"
 )
 
-# Remove already installed packages from the install list
+# Step 3: Remove already installed packages from the list
 to_install <- setdiff(packages, rownames(installed.packages()))
 
-# Install remaining packages
+# Step 4: Install remaining packages
 if (length(to_install) > 0) {
   install.packages(to_install, repos = "https://cloud.r-project.org")
 }
-
